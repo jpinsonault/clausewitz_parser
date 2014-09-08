@@ -38,6 +38,7 @@ CurlyDict = Suppress("{") + Dictionary + Suppress("}")
 Key = (Identifier | ProvinceKey | Date) + Suppress('=')
 Value = CurlyDict | CurlyList | Primitive
 Dictionary << dictOf(Key, Value)
+Province = ProvinceKey + Suppress('=') + Dictionary
 
 # Top level Parser
 SaveFile = Header + Dictionary
