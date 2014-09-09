@@ -9,6 +9,7 @@ import pyparsing
 
 from save_file_syntax import SaveFile
 from save_file_syntax import Province
+from save_file_syntax import Dictionary
 
 import argparse
 import re
@@ -28,13 +29,14 @@ def main(args):
     with open(args.save_file, 'r') as save_file:
         save_file_string = save_file.read()
 
-    data = Province.scanString(save_file_string)
+    data = SaveFile.parseString(save_file_string)
 
-    pprint(data)
-    print('[')
-    for line in data:
-    	print("{},".format(int(line[0][0])))
-    print(']')
+    # pprint(data["provinces"])
+    raw_input()
+    # print('[')
+    # for line in data:
+    # 	print("{},".format(int(line[0][0])))
+    # print(']')
 
 if __name__ == '__main__':
     sys.exit(main(parse_args()))

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from pyparsing import *
 
@@ -7,6 +8,9 @@ def string_to_num(s,l,toks):
         return int(n)
     except ValueError, ve:
         return float(n)
+
+def make_dict(s, l, toks):
+	return dict(toks)
 
 # Primitives
 Identifier = Word(alphas+"_", alphanums+"_")
@@ -20,7 +24,7 @@ Date = Combine(Word(nums) + '.' +Word(nums) + '.' + Word(nums))
 Yes = Literal('yes').addParseAction(lambda x: True)
 No = Literal('no').addParseAction(lambda x: False)
 
-Primitive = String | Date | Number | Yes | No | Identifier
+Primitive =  Identifier | String | Date | Number
 
 # Little bit of text at the top of the file
 Header = Identifier
@@ -34,10 +38,15 @@ List = ZeroOrMore(Primitive)
 CurlyList = Suppress("{") + List + Suppress("}")
 CurlyDict = Suppress("{") + Dictionary + Suppress("}")
 
+# Empty Curly Braces
+OptionalEmptyCurlyBraces = Optional(Suppress("{") + Suppress("}"))
+
 # Dictionary
 Key = (Identifier | ProvinceKey | Date) + Suppress('=')
-Value = CurlyDict | CurlyList | Primitive
+# OptionalEmptyCurlyBraces is a hack to get around empty {}s in the file
+Value = (CurlyDict | CurlyList | Primitive) + OptionalEmptyCurlyBraces
 Dictionary << dictOf(Key, Value)
+# Dictionary << (Key + Value).addParseAction(make_dict)
 Province = ProvinceKey + Suppress('=') + Dictionary
 
 # Top level Parser
