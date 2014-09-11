@@ -23,26 +23,26 @@ class Primitive_tests(unittest.TestCase):
     def test_positive_integer(self):
         test_string = '''1234'''
 
-        result = Integer.parseString(test_string)
-        self.assertEqual(result[0], 1234)
+        result = Identifier.parseString(test_string)
+        self.assertEqual(result[0], "1234")
     
     def test_positive_float(self):
         test_string = '''-1234'''
 
-        result = Integer.parseString(test_string)
-        self.assertEqual(result[0], -1234)
+        result = Identifier.parseString(test_string)
+        self.assertEqual(result[0], "-1234")
 
     def test_positive_float(self):
         test_string = '''12.234'''
 
-        result = Float.parseString(test_string)
-        self.assertEqual(result[0], 12.234)
+        result = Identifier.parseString(test_string)
+        self.assertEqual(result[0], "12.234")
 
     def test_negative_float(self):
         test_string = '''-12.234'''
 
-        result = Float.parseString(test_string)
-        self.assertEqual(result[0], -12.234)
+        result = Identifier.parseString(test_string)
+        self.assertEqual(result[0], "-12.234")
 
     def test_date(self):
         test_string = '''1454.4.28'''
@@ -66,7 +66,7 @@ class ComplexType_tests(unittest.TestCase):
             }'''
 
         result = CurlyDict.parseString(test_string)
-        self.assertEqual(result["id"], 4597)
+        self.assertEqual(result["id"], "4597")
 
     def test_dict(self):
         test_string = '''
@@ -76,7 +76,7 @@ class ComplexType_tests(unittest.TestCase):
 
         result = Dictionary.parseString(test_string)
         self.assertEqual(result["thing"], "stuff")
-        self.assertEqual(result["one"], 1)
+        self.assertEqual(result["one"], "1")
 
     def test_header_and_keys(self):
         test_string = '''EU4txt
@@ -98,7 +98,7 @@ class ComplexType_tests(unittest.TestCase):
             }'''
 
         result = Dictionary.parseString(test_string)
-        self.assertEqual(result["savegame_version"]["second"], 7)
+        self.assertEqual(result["savegame_version"]["second"], "7")
 
     def test_curly_dict_in_value(self):
         test_string = '''player={
@@ -112,13 +112,13 @@ class ComplexType_tests(unittest.TestCase):
             }'''
 
         result = Dictionary.parseString(test_string)
-        self.assertEqual(result["player"]["savegame_version"]["second"], 7)
+        self.assertEqual(result["player"]["savegame_version"]["second"], "7")
 
     def test_list_of_numbers(self):
         test_string = '''1 2 0 0 0 0 0 1 0 1 0 0'''
 
         result = List.parseString(test_string)
-        self.assertEqual(result[1], 2)
+        self.assertEqual(result[1], "2")
 
     def test_list_of_identifiers(self):
         test_string = '''first second third'''
@@ -144,7 +144,7 @@ class ComplexType_tests(unittest.TestCase):
             }'''
 
         result = Dictionary.parseString(test_string)
-        self.assertEqual(result["gameplaysettings"]["setgameplayoptions"]["second"], 1)
+        self.assertEqual(result["gameplaysettings"]["setgameplayoptions"]["second"], "1")
 
     def test_curly_brace_sub_list(self):
         test_string = '''gameplaysettings=
@@ -156,7 +156,9 @@ class ComplexType_tests(unittest.TestCase):
             }'''
 
         result = Dictionary.parseString(test_string)
-        self.assertEqual(result["gameplaysettings"]["setgameplayoptions"][1], 4)
+        print(result)
+        
+        self.assertEqual(result["gameplaysettings"]["setgameplayoptions"][1], "4")
 
     def test_province_int_as_key(self):
         test_string = '''-1=
@@ -177,8 +179,7 @@ class ComplexType_tests(unittest.TestCase):
             }'''
 
         result = Dictionary.parseString(test_string)
-        print(result)
-        self.assertEqual(result["history"]["manpower"], 3.0)
+        self.assertEqual(result["history"]["manpower"], "3.000")
         self.assertEqual(result["history"]["fort1"], 'yes')
         self.assertEqual(result["history"]["capital"], "Stockholm")
         
@@ -191,7 +192,6 @@ class ComplexType_tests(unittest.TestCase):
         result = Dictionary.parseString(test_string)
         self.assertEqual(result["1438.3.6"]["controller"], "SWE")
         
-
 
 if __name__ == '__main__':
     unittest.main()
