@@ -14,6 +14,8 @@ import argparse
 import re
 from pprint import pprint
 
+from SaveFileParser import SaveFileParser
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -25,13 +27,9 @@ def parse_args():
 
 
 def main(args):
-    with open(args.save_file, 'r') as save_file:
-        save_file_string = save_file.read()
+    parser = SaveFileParser(args.save_file)
 
-    data = SaveFile.parseString(save_file_string)
-
-    print(len(data.keys()))
-    print(len(data["provinces"]))
+    nation_size_stats = parser.nation_size_stats
 
 
 if __name__ == '__main__':
